@@ -5,12 +5,14 @@ import com.zct.springboot_kotlin.app.model.User
 import com.zct.springboot_kotlin.app.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service(value = "userService")
 class UserServiceImpl : UserService {
 
     @Autowired val userMapper: UserMapper? = null
 
+    @Transactional
     override fun addUser(user: User): Boolean {
         userMapper!!.insert(user)
         return true

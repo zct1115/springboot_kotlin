@@ -7,7 +7,7 @@ function AjaxPost(Url,JsonData,LodingFun,ReturnFun) {
         dataType: 'json',
         async: 'false',
         beforeSend: LodingFun,
-        error: function () { AjaxErro({ "Status": "Erro", "Erro": "500" }); },
+        error: function () { AjaxErro({ "status": "500", "message": "500" }); },
         success: ReturnFun
     });
 }
@@ -32,8 +32,8 @@ function ErroAlert(e) {
 
 //Ajax 错误返回处理
 function AjaxErro(e) {
-    if (e.state == "500") {
-        ErroAlert(e.data);
+    if (e.status == "500") {
+        ErroAlert(e.message);
         /*switch (e.Erro) {
             case "500":
                 top.location.href = '/Erro/Erro500';

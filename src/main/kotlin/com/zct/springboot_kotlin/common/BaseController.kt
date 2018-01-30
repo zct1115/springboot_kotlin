@@ -9,57 +9,7 @@ import javax.servlet.http.HttpServletRequest
 
 
 open class BaseController {
-    val useJsonp = false
-    val JSONP_FUNC = "callback"
     val CURRENT_USER = "current_user"
-
-    private fun render(response: HttpServletResponse, data: String) {
-        var data = data
-        if (useJsonp) {
-            data = "$JSONP_FUNC($data)"
-        }
-        response.contentType = "application/json"
-        response.characterEncoding = "UTF-8"
-        try {
-            response.writer.write(data)
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-    }
-
-    /**
-     * 对于需要数据的操作的返回，当数据为null时失败
-     * @param response
-     * @param data
-     */
-    protected fun renderJson(response: HttpServletResponse, data: Any?) {
-
-        if (data == null) {
-            renderMessage(response, CodeMessage.NOT_FOUND_DATA, "服务器找不到数据")
-            return
-        }
-
-        val wrapper = JSONObject()
-        wrapper.put("state", CodeMessage.SUCCESS)
-        wrapper.put("data", data)
-        render(response, wrapper.toJSONString())
-
-    }
-
-
-    /**
-     * 通用消息返回
-     * @param response
-     * @param msg
-     */
-    protected fun renderMessage(response: HttpServletResponse, code:String, msg: String) {
-        val wrapper = JSONObject()
-        wrapper.put("state", code)
-        wrapper.put("data", msg)
-        render(response, wrapper.toJSONString())
-    }
-
 
     /**
      * 获取当前登录的用户信息
